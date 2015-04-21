@@ -53,7 +53,6 @@ class Module
                 } else {
                     $writer = new \Zend\Log\Writer\Stream(__DIR__. '/../../logs/debug.log');
                 }
-               
                 $logger->addWriter($writer);
                 return $logger;
             }
