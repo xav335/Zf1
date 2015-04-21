@@ -45,11 +45,13 @@ class Module
           'factories' => array(
             'debuglog' => function($sm){
                 $logger = new \Zend\Log\Logger();
+                //APPLICATION_ENV  est definie dans le host d'apache.
                 if (getenv('APPLICATION_ENV') == 'development') {
-                   
-                    $writer = new \Zend\Log\Writer\Stream(__DIR__. '/../../logs/debug.log');
+                    $firePhp = \FirePHP::getInstance(true);
+                    $firePhp->setOption('maxObjectDepth', 5);
+                    $writer = new \Zend\Log\Writer\FirePhp(new \Zend\Log\Writer\FirePhp\FirePhpBridge($firePhp));
                 } else {
-                    $writer = new \Zend\Log\Writer\FirePhp();
+                    $writer = new \Zend\Log\Writer\Stream(__DIR__. '/../../logs/debug.log');
                 }
                
                 $logger->addWriter($writer);

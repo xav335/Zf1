@@ -21,6 +21,7 @@ class IndexController extends AbstractActionController
     {
         $log = $this->getServiceLocator()->get('debuglog');
         $log->info('Autre moyen d\'implementer firebug');
+         //$log->debug('pouet');
         return new ViewModel();
     }
 }
