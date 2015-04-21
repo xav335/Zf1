@@ -12,10 +12,14 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+//debug via firebug
+require __DIR__ .'/../../../../../vendor/firephp/firephp-core/lib/FirePHPCore/FirePHP.class.php';
+
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        \FB::info('Ok pour FirePHP');
         return new ViewModel();
     }
 }
