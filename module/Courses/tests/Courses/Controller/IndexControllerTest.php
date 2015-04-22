@@ -1,5 +1,5 @@
 <?php
-namespace Courses\Controller;
+namespace CoursesTest\Controller;
 
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
