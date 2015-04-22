@@ -47,9 +47,12 @@ return array(
                         ),
                     ),
                     'delete' => array(
-                        'type'    => 'Literal',
+                        'type'    => 'segment',
                         'options' => array(
-                            'route'    => '/delete',
+                            'route'    => '/delete/:id',
+                            'constraints' => array(
+                                'id'     => '[0-9]+',
+                            ),
                             'defaults' => array(
                                 'action'     => 'delete',
                             ),
