@@ -16,13 +16,18 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new ViewModel(array('message' => 'bonjour les mecs'));
+        return new ViewModel(array('message' => 'Course default'));
     }
 
-    public function fooAction()
+    public function addAction()
     {
         // This shows the :controller and :action parameters in default route
         // are working when you browse to /index/index/foo
-        return array();
+        return new ViewModel(array('message' => 'Ajouter une course'));
+    }
+    
+    public function deleteAction()
+    {
+        return new ViewModel(array('message' => 'Supprimer une course'));
     }
 }

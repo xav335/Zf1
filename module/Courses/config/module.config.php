@@ -3,6 +3,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Courses\Controller\Index' => 'Courses\Controller\IndexController',
+            'Courses\Controller\Coureur' => 'Courses\Controller\CoureurController',
         ),
     ),
     'router' => array(
@@ -11,7 +12,7 @@ return array(
                 'type'    => 'Literal',
                 'options' => array(
                     // Change this to something specific to your module
-                    'route'    => '/',
+                    'route'    => '/courses',
                     'defaults' => array(
                         // Change this value to reflect the namespace in which
                         // the controllers for your module are found
@@ -26,18 +27,36 @@ return array(
                     // as you solidify the routes for your module, however,
                     // you may want to remove it and replace it with more
                     // specific routes.
-                    'default' => array(
-                        'type'    => 'Segment',
+                    'coureur' => array(
+                        'type'    => 'Literal',
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
+                            'route'    => '/coureur',
                             'defaults' => array(
+                                'controller'    => 'Coureur',
+                                'action'     => 'index',
                             ),
                         ),
                     ),
+                    'add' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            'route'    => '/add',
+                            'defaults' => array(
+                                'action'     => 'add',
+                            ),
+                        ),
+                    ),
+                    'delete' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            'route'    => '/delete',
+                            'defaults' => array(
+                                'action'     => 'delete',
+                            ),
+                        ),
+                    ),
+                    
+                    
                 ),
             ),
         ),
