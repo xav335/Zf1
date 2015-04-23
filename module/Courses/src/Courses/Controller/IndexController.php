@@ -53,7 +53,8 @@ class IndexController extends AbstractActionController
             $form->setData($request->getPost());
             //valide ?
             if($form->isValid()){
-            
+                $event->exchangeArray($form->getData());
+                $this->eventService->saveEvent($event);
                 //redirection
                 return $this->redirect()->toRoute('courses');
             }
