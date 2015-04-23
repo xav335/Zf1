@@ -1,9 +1,18 @@
 <?php
+use Courses\Controller\IndexController;
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Courses\Controller\Index' => 'Courses\Controller\IndexController',
+           // 'Courses\Controller\Index' => 'Courses\Controller\IndexController',
             'Courses\Controller\Coureur' => 'Courses\Controller\CoureurController',
+        ),
+        'factories' => array(
+            'Courses\Controller\Index' => function ($sm){
+                $parentLocator = $sm->getServiceLocator();
+                $serv = $parentLocator->get('Courses\Model\Service\EventService');
+                $ctrl = new IndexController($serv);
+                return $ctrl;
+            }
         ),
     ),
     'router' => array(

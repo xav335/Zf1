@@ -11,12 +11,27 @@ namespace Courses\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Courses\Model\Service\EventService;
 
 class IndexController extends AbstractActionController
 {
-    public function indexAction()
+    protected $eventService;
+    
+    public function __construct(EventService $eventService){
+        $this->eventService = $eventService;
+    }
+    
+    public function listAction()
     {
         return new ViewModel(array('message' => 'Course default'));
+    }
+    
+    public function indexAction()
+    {
+
+        $evenements = $this->eventService->fetchAll();
+        return new ViewModel(array('evenements' => $evenements));
+        //return new ViewModel();
     }
 
     public function addAction()

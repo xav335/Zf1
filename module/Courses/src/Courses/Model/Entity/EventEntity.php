@@ -11,17 +11,16 @@ class EventEntity
     
     public function __construct(array $options = null){
         if (null !== $options){
-            $this->populate($options);        
+            $this->exchangeArray($options);        
         }
     }
     
-    public function populate(array $data){
+    public function exchangeArray(array $data){
         $this->id = isset($data['id']) ? $data['id'] : null;
         $this->name = isset($data['name']) ? $data['name'] : null;
         $this->location = isset($data['location']) ? $data['location'] : null;
         $this->date = isset($data['date']) ? new \DateTime($data['date']) : null;
         $this->description = isset($data['description']) ? $data['description'] : null;
-        
     }
     
     /**

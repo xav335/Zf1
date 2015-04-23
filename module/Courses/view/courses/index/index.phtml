@@ -1,5 +1,11 @@
-<strong>Module:</strong>        Courses &raquo;
-<strong>Controller:</strong>    Index &raquo;
-<strong>Action:</strong>        index
+<strong>Liste des courses :</strong><?php echo count($evenements) ?> Courses
+<br><br>
+<?php 
+foreach ($evenements as $evt):
+?>
 
-<?php echo $message?>
+<p><?php echo $evt->name?></p>
+
+<?php 
+endforeach;
+?>
