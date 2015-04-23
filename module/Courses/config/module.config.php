@@ -67,7 +67,18 @@ return array(
                             ),
                         ),
                     ),
-                    
+                    'modify' => array(
+                        'type'    => 'segment',
+                        'options' => array(
+                            'route'    => '/modify/:id',
+                            'constraints' => array(
+                                'id'     => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                                'action'     => 'modify',
+                            ),
+                        ),
+                    ),
                     
                 ),
             ),
