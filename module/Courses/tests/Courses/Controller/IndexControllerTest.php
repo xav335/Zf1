@@ -4,6 +4,7 @@ namespace CoursesTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
+
 class RoutingConfigurationTest extends AbstractHttpControllerTestCase
 {
     public function setUp(){

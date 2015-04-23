@@ -47,6 +47,13 @@
 class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate
 {
     /**
+     * Last count of tests in this suite.
+     *
+     * @var integer|null
+     */
+    private $cachedNumTests;
+
+    /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
      * @var boolean
@@ -306,15 +313,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * added, a <code>PHPUnit_Framework_Warning</code> will be created instead,
      * leaving the current test run untouched.
      *
-     * @param  string                      $filename
-     * @param  array                       $phptOptions Array with ini settings for the php instance
-     *                                                  run, key being the name if the setting,
-     *                                                  value the ini value.
+     * @param  string $filename
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 2.3.0
      * @author Stefano F. Rausch <stefano@rausch-e.net>
      */
-    public function addTestFile($filename, $phptOptions = array())
+    public function addTestFile($filename)
     {
         if (!is_string($filename)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -322,7 +326,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (file_exists($filename) && substr($filename, -5) == '.phpt') {
             $this->addTest(
-                new PHPUnit_Extensions_PhptTestCase($filename, $phptOptions)
+                new PHPUnit_Extensions_PhptTestCase($filename)
             );
             return;
         }
@@ -409,14 +413,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Counts the number of test cases that will be run by this test.
      *
+     * @param boolean $preferCache Indicates if cache is preferred.
      * @return integer
      */
-    public function count()
+    public function count($preferCache = false)
     {
-        $numTests = 0;
-
-        foreach ($this as $test) {
-            $numTests += count($test);
+        if ($preferCache && $this->cachedNumTests != null) {
+            $numTests = $this->cachedNumTests;
+        } else {
+            $numTests = 0;
+            foreach ($this as $test) {
+                $numTests += count($test);
+            }
+            $this->cachedNumTests = $numTests;
         }
 
         return $numTests;

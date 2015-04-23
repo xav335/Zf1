@@ -12,6 +12,8 @@ namespace Courses\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Courses\Model\Service\EventService;
+use Courses\Form\EventForm;
+use Courses\Model\Entity\EventEntity;
 
 class IndexController extends AbstractActionController
 {
@@ -36,9 +38,28 @@ class IndexController extends AbstractActionController
 
     public function addAction()
     {
-        // This shows the :controller and :action parameters in default route
-        // are working when you browse to /index/index/foo
-        return new ViewModel(array('message' => 'Ajouter une course'));
+        $form = new EventForm();
+        $form->setAttribute('action', $this->url()->fromRoute('courses/add'));
+        $form->get('btnEnvoi')->setAttribute('value', 'ajouter');
+        
+        //$log = $this->getServiceLocator()->get('debuglog');
+        //$log->info('form', $form);
+        
+        //Formulaire soumit ?
+        $request = $this->getRequest();
+        if ($request->isPost()){
+            $event = new EventEntity();
+            $form->setInputFilter($event->getInputFilter());
+            $form->setData($request->getPost());
+            //valide ?
+            if($form->isValid()){
+            
+                //redirection
+                return $this->redirect()->toRoute('courses');
+            }
+        }
+            
+        return new ViewModel(array('message' => 'Ajouter une course', 'formulaire' => $form));
     }
     
     public function modifyAction()

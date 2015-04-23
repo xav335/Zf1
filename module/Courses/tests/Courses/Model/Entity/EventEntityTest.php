@@ -3,6 +3,11 @@ namespace CoursesTest\Model\Entity;
 
 use Courses\Model\Entity\EventEntity;
 
+/**
+ *
+ * @backupGlobals disabled
+ *
+ */
 class EventEntityTest extends \PHPUnit_Framework_TestCase
 {
     public function testNewCreeUneInstanceVide(){
@@ -25,7 +30,7 @@ class EventEntityTest extends \PHPUnit_Framework_TestCase
         );
         
         $event = new EventEntity();
-        $event->populate($data);
+        $event->exchangeArray($data);
         
         $this->assertEquals($data['id'], $event->id);
         $this->assertEquals($data['name'], $event->name);
