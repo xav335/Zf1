@@ -1,10 +1,3 @@
 <?php echo $message?><br><br>
 
-<?php echo $this->form()->openTag($formulaire); ?>
-<?php echo $this->formHidden($formulaire->get('id')); ?>
-<?php echo $this->formRow($formulaire->get('name')); ?><br>
-<?php echo $this->formRow($formulaire->get('date')); ?><br>
-<?php echo $this->formRow($formulaire->get('location')); ?><br>
-<?php echo $this->formRow($formulaire->get('description')); ?><br>
-<?php echo $this->formSubmit($formulaire->get('btnEnvoi')); ?><br>
-<?php echo $this->form()->closeTag();?>
+<?php echo $this->partial('partials/eventForm.phtml')?>
