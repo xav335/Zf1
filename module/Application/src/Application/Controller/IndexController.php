@@ -11,19 +11,28 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Log\Logger;
 
-// debug via firebug
-// require_once __DIR__ .'/../../../../../vendor/firephp/firephp-core/lib/FirePHPCore/fb.php';
+
 
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        $log = $this->getServiceLocator()->get('debuglog');
-        if ($log instanceof Logger)
-            $log->info('Autre moyen d\'implementer firebug');
-         //$log->debug('pouet');
+        $log = $this->getServiceLocator()->get('debugLog');
+        
+        //$erreur = new Erreur();
+         $test = "hghjgjhg";
+         $tabTest = array('Indice 1' => 
+             array('clé 1' => 'Valeur 1'),
+             array('clé 3' => 'Valeur 2'),
+             array('clé 3' => 'Valeur 3'),
+         );
+//         var_dump($test);
+        ini_set('max_execution_time',120);
+        $log->info('Autre moyen d\'implémenter FirePHP !');
+        $log->info("\$test: $test");
+        $log->info('$tabTest',$tabTest);
+//        $log->debug('Infos débug');
         return new ViewModel();
     }
 }

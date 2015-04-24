@@ -1,0 +1,8 @@
+<?php 
+$formulaire->setAttribute('action', 
+                        $this->url('home/courses/modifier',array('id' => $id)));
+?>
+<h1>Edition d'une course</h1>
+<?php 
+echo $this->partial('partials/eventform.phtml');
+?>

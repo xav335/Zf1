@@ -1,37 +1,52 @@
 <?php
 namespace Courses\Model\Service;
-
 use Courses\Model\Entity\EventEntity;
+
 /**
- * Service d'échange avec les couches de persistence des evenements
- * @author javier
+ * Services d'échanges avec les couches de persistence des événements
+ * @author Administrateur
  *
  */
-class EventService
+
+
+
+class EventService //implements EventServiceInterface
 {
     protected $persistMean;
     
     /**
-     * Défini le moyen de persistence
-     * @param unknown $mean
+     * Définit le moyen de persistence 
+     * @param mixed $mean
      */
-    public function setPersistMean($mean) {
-       $this->persistMean = $mean ;
-    }
+    public function setPersistMean($mean){
+        $this->persistMean = $mean;
+    } 
     
-    public function fetchAll() {
+    /**
+     * Obtient tous les �v�nements
+     */
+    public function fetchAll(){
         return $this->persistMean->fetchAll();
     }
     
+    /**
+     * Persiste un événement
+     */
     public function saveEvent(EventEntity $event){
         $data = $event->getArrayCopy();
         unset($data['inputFilter']);
-        return $this->persistMean->saveEvent($data);
+        
+        $this->persistMean->saveEvent($data);
     }
     
-    public function getEventById($id){
-        return $this->persistMean->getEventById($id);
+    public function getEvent($id){
+        $data = $this->persistMean->getEvent($id);
+        //$event = new EventEntity($data);
+        return $data;    
     }
+    
+    
+    
 }
 
 ?>

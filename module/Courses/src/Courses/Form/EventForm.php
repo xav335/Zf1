@@ -1,69 +1,70 @@
 <?php
 namespace Courses\Form;
 
-use Zend\Form\Form;
-
-
-class EventForm extends Form
+//use Zend\EventManager\EventManagerInterface;
+class EventForm extends AbstractForm
 {
-    public function  __construct(){
+
+    
+    
+    public function __construct(){
         parent::__construct('event-form');
-        $this->setAttribute('method', 'post');
+        $this->setAttribute("method", "post");
         
         $this->add(array(
-                'type' => 'hidden',
-                'name' => 'id',
+            'type' => 'Hidden',
+            'name' => 'id',
         ));
+        
         $this->add(array(
-            'type' => 'text',
+            'type' => 'Text',
             'name' => 'name',
-            'attributs' => array(
-        
-            ),
             'options' => array(
-                'label' => 'nom',
+                'label' => 'Nom :'
             ),
         ));
+        
         $this->add(array(
-            'type' => 'text',
+            'type' => 'Text',
             'name' => 'location',
-            'attributs' => array(
+            'attributes' => array(
                 
             ),
             'options' => array(
-                'label' => 'lieu',
+                'label' => 'Lieu :'
             ),
         ));
+        
         $this->add(array(
-            'type' => 'textarea',
+            'type' => 'Textarea',
             'name' => 'description',
-            'attributs' => array(
-        
+            'attributes' => array(
+                'rows' => 5,
+                'cols' => 50,
             ),
             'options' => array(
-                'label' => 'description',
+                'label' => 'Description :'
             ),
         ));
+        
         $this->add(array(
-            'type' => 'date',
+            'type' => 'Date',
             'name' => 'date',
-            'attributs' => array(
-        
-            ),
             'options' => array(
-                'label' => 'date',
+                'label' => 'Date :',
+                //'format' => 'd/m/Y',
             ),
         ));
-       $this->add(array(
-             'name' => 'btnEnvoi',
-             'type' => 'Submit',
-             'attributes' => array(
-                 'value' => 'Go',
-             ),
-         ));
-         
+        
+        $this->add(array(
+            'type' => 'Submit',
+            'name' => 'btnEnvoi',
+            'attributes' => array(
+                'value' => 'OK',
+            ),
+        ));
+        
     }
-    
 }
 
 ?>

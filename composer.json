@@ -1,13 +1,15 @@
 {
-  "name" : "zendframework/skeleton-application",
+  "name" : "Formation ZF2",
   "description" : "Skeleton Application for ZF2",
   "require" : {
     "php" : ">=5.3.3",
-    "zendframework/zendframework" : "2.3.*",
-    "doctrine/orm" : "=v2.5.0",
-    "phpunit/phpunit" : ">=4.7.x-dev"
+    "zendframework/zendframework" : "2.3.*"
   },
   "require-dev" : {
-    "firephp/firephp-core" : "=v0.4.0"
-  }
+    "phpunit/phpunit" : "dev-master",
+    "firephp/firephp-core" : "dev-master"
+  },
+  "keywords" : [ "framework", "zf2" ],
+  "license" : "BSD-3-Clause",
+  "homepage" : "http://framework.zend.com/"
 }

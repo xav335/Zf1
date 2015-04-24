@@ -10,14 +10,21 @@
 namespace Courses;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\ModuleManager;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\Mvc\MvcEvent;
-use Zend\I18n\View\Helper\Translate;
 use Zend\I18n\Translator\Translator;
 use Zend\Validator\AbstractValidator;
+use Zend\EventManager\Event;
+use Zend\EventManager\StaticEventManager;
 
-
-class Module implements AutoloaderProviderInterface
+class Module 
+    implements AutoloaderProviderInterface,ConfigProviderInterface,
+                ServiceProviderInterface
 {
+    protected $serviceManager;
+    
     public function getAutoloaderConfig()
     {
         return array(
@@ -30,6 +37,7 @@ class Module implements AutoloaderProviderInterface
                     __NAMESPACE__ => __DIR__ . '/src/' . str_replace('\\', '/' , __NAMESPACE__),
                 ),
             ),
+            
         );
     }
 
@@ -37,12 +45,13 @@ class Module implements AutoloaderProviderInterface
     {
         return include __DIR__ . '/config/module.config.php';
     }
-    
+
     public function getServiceConfig(){
         return include __DIR__ . '/config/service.config.php';
     }
-
-public function onBootstrap(MvcEvent $e){
+    
+    
+    public function onBootstrap(MvcEvent $e){
         $app = $e->getApplication();
         $this->serviceManager = $app->getServiceManager();
         $events = $app->getEventManager();
@@ -52,13 +61,13 @@ public function onBootstrap(MvcEvent $e){
          * Permet de changer le layout pour tous les controllers de ce module
          * @param ModuleManager $mngr
          */
-        $sharedEvents->attach(__NAMESPACE__,'dispatch',function($e){
+        $sharedEvents->attach(__NAMESPACE__,'dispatch',function(Event $e){
             $ctrl = $e->getTarget();
             $ctrl->layout('layout/layoutFront');
         });        
         
         // Réagir à la création d'un formulaire
-        $sharedEvents->attach("Courses/Form/Abstract",'__construct',array($this,'onNewForm'));
+         $sharedEvents->attach('Courses\Form\AbstractForm','__construct',array($this,'onNewForm'));
     }
 
     public function onNewForm(Event $e){

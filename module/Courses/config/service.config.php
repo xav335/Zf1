@@ -7,23 +7,26 @@ use Courses\Model\Service\EventService;
 
 return array(
     'factories' => array(
-        'EventTableGateway' => function ($sm){
+        'EventTableGateway' => function($sm){
             $table ='vwevents';
-            $adapter = $sm->get('Zend\db\Adapter\Adapter');
+            $adapter = $sm->get('Zend\Db\Adapter\Adapter') ;
             $resultSet = new ResultSet();
             $resultSet->setArrayObjectPrototype(new EventEntity());
-            $tableGateway = new TableGateway($table, $adapter,null, $resultSet);
+            $tableGateway = new TableGateway($table, $adapter,null,$resultSet);
             return $tableGateway;
         },
-        'Courses\Model\Table\EventTable' => function ($sm){
-             $gateway = new EventTable($sm->get('EventTableGateway'));
-             return $gateway;
+        'Courses\Model\Table\EventTable' => function($sm){
+            $gateway = $sm->get('EventTableGateway');
+            $table = new EventTable($gateway);
+            return $table;
         },
-        'Courses\Model\Service\EventService' => function ($sm){
+        'EventService' => function($sm){
             $table = $sm->get('Courses\Model\Table\EventTable');
             $service = new EventService();
             $service->setPersistMean($table);
-            return $service;  
+            return $service;
         }
+        
     ),
+    
 );

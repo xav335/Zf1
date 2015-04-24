@@ -1,0 +1,37 @@
+<h1>Liste des courses</h1>
+<p class="">
+    Voici les courses que nous vous proposons et recensons à ce jour. Vous pouvez aussi nous 
+    <a href="<?php echo $this->url("home/courses/ajouter"); ?>">
+    proposer votre événement
+    </a>.
+</p>
+<p><?php echo $this->uppercase(count($evenements) . ' événement(s) recensé(s)') ; ?></p>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Lieu</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        foreach ($evenements as $evt):
+        ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($evt->name); ?></td>
+            <td><?php echo $this->escapeHtml($evt->location); ?></td>
+            <td><?php echo $this->escapeHtml($evt->description); ?></td>
+            <td><?php echo $this->escapeHtml($evt->date->format('d/m/Y')); ?></td>
+            <td>
+                <a href="<?php echo $this->url('home/courses/modifier',array('id' => $evt->id ) ); ?>">Modifier</a>
+                <a href="<?php echo $this->url('home/courses/supprimer',array('id' => $evt->id ) ); ?>">Supprimer</a>
+            </td>
+        </tr>
+        <?php 
+        endforeach;
+        ?>
+    </tbody>
+</table>

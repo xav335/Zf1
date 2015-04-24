@@ -21,6 +21,6 @@ class CoureurController extends AbstractActionController
     public function indexAction()
     {
         // TODO Auto-generated CoureurController::indexAction() default action
-        return new ViewModel();
+        return new ViewModel(array('message'  => 'Jean Dupont  2') );
     }
 }

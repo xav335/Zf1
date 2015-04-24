@@ -1,8 +1,12 @@
-<?php echo $this->form()->openTag($formulaire); ?>
-<?php echo $this->formHidden($formulaire->get('id')); ?>
-<?php echo $this->formRow($formulaire->get('name')); ?><br>
-<?php echo $this->formRow($formulaire->get('date')); ?><br>
-<?php echo $this->formRow($formulaire->get('location')); ?><br>
-<?php echo $this->formRow($formulaire->get('description')); ?><br>
-<?php echo $this->formSubmit($formulaire->get('btnEnvoi')); ?><br>
-<?php echo $this->form()->closeTag();?>
+<?php 
+echo $this->form()->openTag($formulaire);
+echo $this->formhidden($formulaire->get('id'));
+?>
+    <?php echo $this->bootstrapformrow($formulaire->get('name')) ?>
+    <?php echo $this->bootstrapformrow($formulaire->get('location')) ?>
+    <?php echo $this->bootstrapformrow($formulaire->get('date')) ?>
+    <?php echo $this->bootstrapformrow($formulaire->get('description')) ?>
+    <?php echo $this->formrow($formulaire->get('btnEnvoi')->setAttribute('class','btn btn-success btn-lg')) ?>
+<?php 
+echo $this->form()->closeTag($formulaire);
+?>

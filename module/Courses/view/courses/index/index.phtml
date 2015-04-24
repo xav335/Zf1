@@ -1,12 +1,3 @@
-<strong>Liste des courses :</strong>   <?php echo count($evenements) ?> Courses
-
-<a href="<? echo $this->url('courses/add') ?>" >Ajout</a>
-<br><br>
-<?php 
-foreach ($evenements as $evt):
-?>
-<p><a href="<? echo $this->url('courses/modify', array('id' => $evt->id)) ?>" >modifier</a>- <b><?php echo $this->escapehtml($evt->name)?></b> - <?php echo $this->escapehtml($evt->description) ?></p>
-
-<?php 
-endforeach;
-?>
+<strong>Module:</strong>        Courses &raquo;
+<strong>Controller:</strong>    Index &raquo;
+<strong>Action:</strong>        index

@@ -12,8 +12,8 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
-//debug via firebug
-require __DIR__ .'/../../vendor/firephp/firephp-core/lib/FirePHPCore/FirePHP.class.php';
+// FirePHP est sans espace de nom : chargement de sa définition
+require_once __DIR__ . '/../../vendor/firephp/firephp-core/lib/FirePHPCore/FirePHP.class.php';
 
 class Module
 {
@@ -37,26 +37,32 @@ class Module
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
+            
         );
     }
     
     public function getServiceConfig(){
         return array(
-          'factories' => array(
-            'debuglog' => function($sm){
-                $logger = new \Zend\Log\Logger();
-                //APPLICATION_ENV  est definie dans le host d'apache.
-                if (getenv('APPLICATION_ENV') == 'development') {
-                    $firePhp = \FirePHP::getInstance(true);
-                    $firePhp->setOption('maxObjectDepth', 5);
-                    $writer = new \Zend\Log\Writer\FirePhp(new \Zend\Log\Writer\FirePhp\FirePhpBridge($firePhp));
-                } else {
-                    $writer = new \Zend\Log\Writer\Stream(__DIR__. '/../../logs/debug.log');
+            'factories' => array(
+                'debugLog' => function($sm){
+                    $logger = new \Zend\Log\Logger();
+                    //Writer différent selon le contexte applicatif (développement, production, test...)
+                    if(getenv('APPLICATION_ENV') == "development"){
+                        $firePhp = \FirePHP::getInstance(true);
+                        $firePhp->setOption('maxObjectDepth',5);
+                        $firePhp->setOption('maxArrayDepth',5);
+                        $writer = new \Zend\Log\Writer\FirePhp(
+                                        new \Zend\Log\Writer\FirePhp\FirePhpBridge($firePhp)
+                            );
+                    }else{ 
+                        $writer = new \Zend\Log\Writer\Stream(__DIR__.'/../../logs/debug.log');
+                    }
+                    
+                    $logger->addWriter($writer);
+                    return $logger;
                 }
-                $logger->addWriter($writer);
-                return $logger;
-            }
-          )  
+            ),
         );
     }
+
 }
