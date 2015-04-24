@@ -45,7 +45,7 @@ class EventForm extends Form
             ),
         ));
         $this->add(array(
-            'type' => 'text',
+            'type' => 'date',
             'name' => 'date',
             'attributs' => array(
         

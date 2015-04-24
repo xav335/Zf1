@@ -67,8 +67,7 @@ class EventEntity implements InputFilterAwareInterface
                     array(
                         'name' => 'Date',
                         'options' => array(
-                           'format' => 'd/m/Y',
-                            'locale' => 'fr',
+                           'format' => 'Y-m-d',
                         ),
                     ),
                 ),

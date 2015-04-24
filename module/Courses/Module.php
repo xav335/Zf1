@@ -10,6 +10,10 @@
 namespace Courses;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\Mvc\MvcEvent;
+use Zend\I18n\View\Helper\Translate;
+use Zend\I18n\Translator\Translator;
+use Zend\Validator\AbstractValidator;
 
 
 class Module implements AutoloaderProviderInterface
@@ -38,13 +42,32 @@ class Module implements AutoloaderProviderInterface
         return include __DIR__ . '/config/service.config.php';
     }
 
-//     INUTILE CAR DEJA FAIT DANS APPLICATION
-//     public function onBootstrap(MvcEvent $e)
-//     {
-//         // You may not need to do this if you're doing it elsewhere in your
-//         // application
-//         $eventManager        = $e->getApplication()->getEventManager();
-//         $moduleRouteListener = new ModuleRouteListener();
-//         $moduleRouteListener->attach($eventManager);
-//     }
+public function onBootstrap(MvcEvent $e){
+        $app = $e->getApplication();
+        $this->serviceManager = $app->getServiceManager();
+        $events = $app->getEventManager();
+        $sharedEvents = $events->getSharedManager();
+        
+        /**
+         * Permet de changer le layout pour tous les controllers de ce module
+         * @param ModuleManager $mngr
+         */
+        $sharedEvents->attach(__NAMESPACE__,'dispatch',function($e){
+            $ctrl = $e->getTarget();
+            $ctrl->layout('layout/layoutFront');
+        });        
+        
+        // Réagir à la création d'un formulaire
+        $sharedEvents->attach("Courses/Form/Abstract",'__construct',array($this,'onNewForm'));
+    }
+
+    public function onNewForm(Event $e){
+        $defaultTranslator = $this->serviceManager->get('translator');
+        $defaultLocale = $defaultTranslator->getLocale();
+        $validatorTranslator = new Translator();
+        $validatorTranslator->addTranslationFile('phpArray',
+            __DIR__."/language/zendframework/$defaultLocale/Zend_Validate.php");
+        AbstractValidator::setDefaultTranslator(new \Zend\Mvc\I18n\Translator($validatorTranslator));
+        
+    }
 }

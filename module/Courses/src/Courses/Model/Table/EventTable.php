@@ -2,7 +2,7 @@
 namespace Courses\Model\Table;
 
 use Zend\Db\TableGateway\TableGateway;
-use Courses\Model\Entity\EventEntity;
+
 /**
  * represente la table ou les evenements seront stockés
  * @author javier
@@ -37,6 +37,13 @@ class EventTable
             $this->gateway->update($data, array('id' => $id));
             return $id;
         }    
+    }
+    
+    public function getEventById($id){
+        $resultset = $this->gateway->select(array('id' => $id));
+        //cette ligne change le resultset en EventEntity comme defini dans le service.config.php
+        $resultset->current(); 
+        return $resultset->current();
     }
 }
 

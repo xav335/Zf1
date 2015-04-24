@@ -43,7 +43,9 @@ class IndexController extends AbstractActionController
         $form->get('btnEnvoi')->setAttribute('value', 'ajouter');
         
         //$log = $this->getServiceLocator()->get('debuglog');
+        //if ($log instanceof Logger);
         //$log->info('form', $form);
+        
         
         //Formulaire soumit ?
         $request = $this->getRequest();
@@ -54,7 +56,7 @@ class IndexController extends AbstractActionController
             //valide ?
             if($form->isValid()){
                 $event->exchangeArray($form->getData());
-                $this->eventService->saveEvent($event);
+                $rtn = $this->eventService->saveEvent($event);
                 //redirection
                 return $this->redirect()->toRoute('courses');
             }
@@ -65,9 +67,30 @@ class IndexController extends AbstractActionController
     
     public function modifyAction()
     {
-        // This shows the :controller and :action parameters in default route
-        // are working when you browse to /index/index/foo
-        return new ViewModel(array('message' => 'modifier une course'));
+        $id = $this->params()->fromRoute('id');
+        $form = new EventForm();
+        $form->setAttribute('action', $this->url()->fromRoute('courses/modify',array('id' => $id)));
+        $form->get('btnEnvoi')->setAttribute('value', 'Modifier');
+        
+        $event = $this->eventService->getEventById($id);
+        $form->bind($event);
+        
+        $request = $this->getRequest();
+         if ($request->isPost()){
+                $event = new EventEntity();
+                $form->setInputFilter($event->getInputFilter());
+                $form->setData($request->getPost());
+                //valide ?
+                if($form->isValid()){
+                    $event->exchangeArray($form->getData());
+                    $rtn = $this->eventService->saveEvent($event);
+                    //redirection
+                    return $this->redirect()->toRoute('courses');
+                }
+            }
+        
+        
+        return new ViewModel(array('message' => 'Modifier une course', 'formulaire' => $form));
     }
     
     public function deleteAction()

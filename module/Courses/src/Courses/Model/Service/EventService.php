@@ -26,7 +26,11 @@ class EventService
     public function saveEvent(EventEntity $event){
         $data = $event->getArrayCopy();
         unset($data['inputFilter']);
-        $this->persistMean->saveEvent($data);
+        return $this->persistMean->saveEvent($data);
+    }
+    
+    public function getEventById($id){
+        return $this->persistMean->getEventById($id);
     }
 }
 
