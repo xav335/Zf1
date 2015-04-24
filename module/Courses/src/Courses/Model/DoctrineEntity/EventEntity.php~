@@ -1,0 +1,65 @@
+<?php
+//generé avec :::   vendor/bin/doctrine-module orm:generate-entities module/Courses/src/
+
+namespace Courses\Model\DoctrineEntity;
+
+use Doctrine\ORM\Mapping As ORM;
+use Zend\Filter\Int;
+use Zend\XmlRpc\Value\String;
+
+/**
+ * Evénements liés à la DB via Doctrine
+ * @author Administrateur
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="events")
+ *
+ */
+class EventEntity
+{
+    /**
+     * @var Int
+     * 
+     * @ORM\Column(name="id",type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+    
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="name",type="string")
+     * 
+     */
+    protected $name;
+    
+    /**
+     * 
+     * @var string
+     * 
+     * @ORM\Column(name="description",type="text")
+     */
+    protected $description;
+    
+    
+    /**
+     * @var String
+     * 
+     * @ORM\Column(name="location",type="string")
+     */
+    protected $location;
+    
+    
+    /**
+     * @var \DateTime
+     * 
+     * @ORM\Column(name="rundate",type="date")
+     */
+    protected $date;
+    
+    
+}
+
+?>

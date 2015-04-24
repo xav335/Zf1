@@ -150,6 +150,20 @@ return array(
             'bootstrapformrow' => 'Courses\View\Helper\BootstrapFormRow',
         ),
     ),
-    
+    'doctrine' => array(
+        'driver' => array(
+            'courses_model_entities' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__.'/../src/Courses/Model/DoctrineEntity'),
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'Courses\Model\DoctrineEntity' => 'courses_model_entities',
+                ),
+            ),
+        ),
+        
+    ),
     
 );

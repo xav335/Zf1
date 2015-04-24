@@ -538,7 +538,7 @@ class FirePHP {
     public function group($name, $options = null)
     {
     
-        if (!$name) {
+        if ( !isset($name) ) {
             throw $this->newException('You must specify a label for the group!');
         }
 
@@ -787,6 +787,12 @@ class FirePHP {
             throw $this->newException('Wrong number of arguments to fb() function!');
         }
 
+        // Get folder name where firephp is located.
+        $parentFolder = basename(dirname(__FILE__));
+        $parentFolderLength = strlen( $parentFolder );
+        $fbLength = 7 + $parentFolderLength;
+        $fireClassLength = 18 + $parentFolderLength;
+
         if ($this->logToInsightConsole !== null && (get_class($this) == 'FirePHP_Insight' || is_subclass_of($this, 'FirePHP_Insight'))) {
             $trace = debug_backtrace();
             if (!$trace) return false;
@@ -798,16 +804,16 @@ class FirePHP {
                 }
                 if (isset($trace[$i]['file'])) {
                     $path = $this->_standardizePath($trace[$i]['file']);
-                    if (substr($path, -18, 18) == 'FirePHPCore/fb.php' || substr($path, -29, 29) == 'FirePHPCore/FirePHP.class.php') {
+                    if (substr($path, -1*$fbLength, $fbLength) == $parentFolder.'/fb.php' || substr($path, -1*$fireClassLength, $fireClassLength) == $parentFolder.'/FirePHP.class.php') {
                         continue;
                     }
                 }
                 if (isset($trace[$i]['function']) && $trace[$i]['function'] == 'fb' &&
-                        isset($trace[$i - 1]['file']) && substr($this->_standardizePath($trace[$i - 1]['file']), -18, 18) == 'FirePHPCore/fb.php') {
+                        isset($trace[$i - 1]['file']) && substr($this->_standardizePath($trace[$i - 1]['file']), -1*$fbLength, $fbLength) == $parentFolder.'/fb.php') {
                     continue;
                 }
                 if (isset($trace[$i]['class']) && $trace[$i]['class'] == 'FB' &&
-                        isset($trace[$i - 1]['file']) && substr($this->_standardizePath($trace[$i - 1]['file']), -18, 18) == 'FirePHPCore/fb.php') {
+                        isset($trace[$i - 1]['file']) && substr($this->_standardizePath($trace[$i - 1]['file']), -1*$fbLength, $fbLength) == $parentFolder.'/fb.php') {
                     continue;
                 }
                 break;
@@ -940,14 +946,14 @@ class FirePHP {
                    && isset($trace[$i]['file'])
                    && ($trace[$i]['class'] == 'FirePHP'
                        || $trace[$i]['class'] == 'FB')
-                   && (substr($this->_standardizePath($trace[$i]['file']), -18, 18) == 'FirePHPCore/fb.php'
-                       || substr($this->_standardizePath($trace[$i]['file']), -29, 29) == 'FirePHPCore/FirePHP.class.php')) {
+                   && (substr($this->_standardizePath($trace[$i]['file']), -1*$fbLength, $fbLength) == $parentFolder.'/fb.php'
+                       || substr($this->_standardizePath($trace[$i]['file']), -1*$fireClassLength, $fireClassLength) == $parentFolder.'/FirePHP.class.php')) {
                     /* Skip - FB::trace(), FB::send(), $firephp->trace(), $firephp->fb() */
                 } else
                 if (isset($trace[$i]['class'])
                    && isset($trace[$i+1]['file'])
                    && $trace[$i]['class'] == 'FirePHP'
-                   && substr($this->_standardizePath($trace[$i + 1]['file']), -18, 18) == 'FirePHPCore/fb.php') {
+                   && substr($this->_standardizePath($trace[$i + 1]['file']), -1*$fbLength, $fbLength) == $parentFolder.'/fb.php') {
                     /* Skip fb() */
                 } else
                 if ($trace[$i]['function'] == 'fb'
@@ -1003,18 +1009,18 @@ class FirePHP {
                        && isset($trace[$i]['file'])
                        && ($trace[$i]['class'] == 'FirePHP'
                            || $trace[$i]['class'] == 'FB')
-                       && (substr($this->_standardizePath($trace[$i]['file']), -18, 18) == 'FirePHPCore/fb.php'
-                           || substr($this->_standardizePath($trace[$i]['file']), -29, 29) == 'FirePHPCore/FirePHP.class.php')) {
+                       && (substr($this->_standardizePath($trace[$i]['file']), -1*$fbLength, $fbLength) == $parentFolder.'/fb.php'
+                           || substr($this->_standardizePath($trace[$i]['file']), -1*$fireClassLength, $fireClassLength) == $parentFolder.'/FirePHP.class.php')) {
                         /* Skip - FB::trace(), FB::send(), $firephp->trace(), $firephp->fb() */
                     } else
                     if (isset($trace[$i]['class'])
                        && isset($trace[$i + 1]['file'])
                        && $trace[$i]['class'] == 'FirePHP'
-                       && substr($this->_standardizePath($trace[$i + 1]['file']), -18, 18) == 'FirePHPCore/fb.php') {
+                       && substr($this->_standardizePath($trace[$i + 1]['file']), -1*$fbLength, $fbLength) == $parentFolder.'/fb.php') {
                         /* Skip fb() */
                     } else
                     if (isset($trace[$i]['file'])
-                       && substr($this->_standardizePath($trace[$i]['file']), -18, 18) == 'FirePHPCore/fb.php') {
+                       && substr($this->_standardizePath($trace[$i]['file']), -1*$fbLength, $fbLength) == $parentFolder.'/fb.php') {
                         /* Skip FB::fb() */
                     } else {
                         $meta['file'] = isset($trace[$i]['file']) ? $this->_escapeTraceFile($trace[$i]['file']) : '';
@@ -1288,7 +1294,8 @@ class FirePHP {
 
         $return = array();
     
-        if (is_resource($object)) {
+        //#2801 is_resource reports false for closed resources https://bugs.php.net/bug.php?id=28016
+        if (is_resource($object) || gettype($object) === "unknown type") {
     
             return '** ' . (string) $object . ' **';
     
@@ -1407,7 +1414,13 @@ class FirePHP {
 
                 $return[$key] = $this->encodeObject($val, 1, $arrayDepth + 1, $maxDepth + 1);
             }
-        } else {
+		} elseif ( is_bool($object) ) {
+			return $object;
+		} elseif ( is_null($object) ) {
+			return $object;
+		} elseif ( is_numeric($object) ) {
+			return $object;
+		} else {
             if ($this->is_utf8($object)) {
                 return $object;
             } else {

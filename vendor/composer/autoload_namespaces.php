@@ -21,4 +21,6 @@ return array(
     'Doctrine\\Common\\Cache\\' => array($vendorDir . '/doctrine/cache/lib'),
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
     'Doctrine\\Common\\' => array($vendorDir . '/doctrine/common/lib'),
+    'DoctrineORMModule\\' => array($vendorDir . '/doctrine/doctrine-orm-module/src'),
+    'DoctrineModule\\' => array($vendorDir . '/doctrine/doctrine-module/src'),
 );
